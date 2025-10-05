@@ -1,0 +1,15 @@
+{% extends 'decision_app/base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-body">
+      <h2 class="card-title mb-4">Add Node to Workflow: <strong>{{ workflow.name }}</strong></h2>
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3">Add Node</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

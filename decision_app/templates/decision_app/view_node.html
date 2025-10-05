@@ -1,0 +1,15 @@
+{% extends 'decision_app/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-3">{{ node.title }}</h2>
+  <p>{{ node.content }}</p>
+
+  <h4 class="mt-4">Choose an option:</h4>
+  {% for edge in edges %}
+    <form method="get" action="{% url 'view_node' edge.to_node.id %}">
+      <button type="submit" class="btn btn-primary mb-2">{{ edge.condition }}</button>
+    </form>
+  {% endfor %}
+</div>
+{% endblock %}

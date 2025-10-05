@@ -1,0 +1,57 @@
+{% extends 'decision_app/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">📊 Workflow Visualizer: {{ workflow.name }}</h2>
+  <div id="workflow-network" style="height: 600px; border: 1px solid #ccc;"></div>
+</div>
+
+<!-- Include vis.js CDN -->
+<script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const nodes = new vis.DataSet([
+      {% for node in nodes %}
+        {
+          id: {{ node.id }},
+          label: `{{ node.title|escapejs }}`,
+          color: '{{ node.color }}'
+        },
+      {% endfor %}
+    ]);
+
+    const edges = new vis.DataSet([
+      {% for edge in edges %}
+        {
+          from: {{ edge.from_node.id }},
+          to: {{ edge.to_node.id }},
+          label: `{{ edge.condition|escapejs }}`,
+          arrows: 'to'
+        },
+      {% endfor %}
+    ]);
+
+    const container = document.getElementById("workflow-network");
+    const data = {
+      nodes: nodes,
+      edges: edges
+    };
+    const options = {
+      layout: {
+        hierarchical: {
+          direction: "UD", // Up to Down
+          sortMethod: "directed"
+        }
+      },
+      edges: {
+        smooth: true,
+        arrows: { to: true }
+      },
+      physics: false
+    };
+
+    new vis.Network(container, data, options);
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'decision_app/base.html' %}
+{% block content %}
+<div class="container my-4">
+    <h2 class="text-info">Workflow: {{ workflow.name }}</h2>
+    <p class="lead">{{ workflow.description }}</p>
+
+    <div class="mb-3">
+        <a href="{% url 'add_node' workflow.id %}" class="btn btn-sm btn-primary me-2">Add Node</a>
+        <a href="{% url 'add_edge' workflow.id %}" class="btn btn-sm btn-secondary">Add Edge</a>
+        <a href="{% url 'start_workflow' workflow.id %}" class="btn btn-success">▶ Start This Workflow</a>
+        <a href="{% url 'visualize_workflow' workflow.id %}" class="btn btn-warning mt-2">📊 Visualize Workflow</a>
+
+
+    </div>
+
+    <h4 class="mt-4">📌 Nodes</h4>
+    <ul class="list-group mb-4">
+        {% for node in nodes %}
+            <li class="list-group-item"><strong>{{ node.title }}</strong>: {{ node.content }}</li>
+        {% endfor %}
+    </ul>
+
+    <h4>🔗 Edges</h4>
+    <ul class="list-group mb-5">
+        {% for edge in edges %}
+            <li class="list-group-item">
+                {{ edge.from_node.title }} → {{ edge.to_node.title }}
+                {% if edge.condition %} ({{ edge.condition }}){% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h4 class="mb-3">📊 Visual Branching Flow</h4>
+    <div class="workflow-graph">
+        {% for edge in edges %}
+        <div class="branch">
+            <div class="node">{{ edge.from_node.title }}</div>
+            <div class="branch-line"></div>
+            {% if edge.condition %}
+                <div class="condition">[{{ edge.condition }}]</div>
+                <div class="branch-line"></div>
+            {% endif %}
+            <div class="node">{{ edge.to_node.title }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.workflow-graph {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.branch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.node {
+    background-color: #d1ecf1;
+    border: 2px solid #0c5460;
+    padding: 10px 15px;
+    border-radius: 10px;
+    min-width: 100px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.branch-line {
+    width: 30px;
+    height: 2px;
+    background-color: #444;
+}
+
+.condition {
+    font-size: 0.9rem;
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px dashed #ffc107;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+</style>
+{% endblock %}

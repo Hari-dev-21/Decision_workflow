@@ -1,0 +1,25 @@
+{% extends 'decision_app/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">🌐 Available Workflows</h2>
+
+    {% if workflows %}
+        <div class="list-group">
+            {% for workflow in workflows %}
+                <div class="d-flex justify-content-between align-items-center mb-3 list-group-item">
+                    <div>
+                        <h5 class="mb-1">{{ workflow.name }}</h5>
+                        <p class="mb-1 text-muted">{{ workflow.description }}</p>
+                        <a href="{% url 'workflow_detail' workflow.id %}" class="btn btn-sm btn-primary me-2">🔍 View Details</a>
+                   
+                    </div>
+                    <a href="{% url 'delete_workflow' workflow.id %}" class="btn btn-sm btn-danger">🗑 Delete</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted text-center">No workflows found. Create one!</p>
+    {% endif %}
+</div>
+{% endblock %}

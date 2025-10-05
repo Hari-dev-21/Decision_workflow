@@ -1,0 +1,9 @@
+{% extends 'decision_app/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-success">✅ Final Result: {{ node.title }}</h2>
+  <p>{{ node.content }}</p>
+  <a href="{% url 'workflow_list' %}" class="btn btn-outline-secondary mt-4">🔙 Back to Workflow List</a>
+</div>
+{% endblock %}
